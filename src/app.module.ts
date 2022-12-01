@@ -6,7 +6,12 @@ import { AuthModule } from './auth/auth.module';
 import { PostsModule } from './posts/posts.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(typeormConfig), UsersModule, AuthModule, PostsModule],
+  imports: [
+    TypeOrmModule.forRoot(typeormConfig),
+    UsersModule,
+    AuthModule,
+    PostsModule,
+  ],
   controllers: [],
   providers: [],
 })
