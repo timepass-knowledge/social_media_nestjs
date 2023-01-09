@@ -1,4 +1,7 @@
+import { getPasswordHash } from 'src/common/utils';
 import {
+  BeforeInsert,
+  BeforeUpdate,
   Column,
   CreateDateColumn,
   Entity,
@@ -11,16 +14,16 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column('varchar')
   firstName: string;
 
-  @Column()
+  @Column('varchar')
   lastName: string;
 
-  @Column()
+  @Column('varchar', { unique: true })
   email: string;
 
-  @Column()
+  @Column('varchar')
   password: string;
 
   @Column({ type: 'date' })
@@ -34,4 +37,12 @@ export class User {
 
   @Column({ default: true })
   isActive: boolean;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  async hashPassword() {
+    if (this.password) {
+      this.password = await getPasswordHash(this.password);
+    }
+  }
 }

@@ -10,17 +10,24 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
-  ) {}
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  ) { }
+  async create(createUserDto: CreateUserDto) {
+    const user = this.usersRepository.create({
+      firstName: createUserDto.firstName,
+      lastName: createUserDto.lastName,
+      dob: createUserDto.dob,
+      email: createUserDto.email,
+      password: createUserDto.password,
+    });
+    return await this.usersRepository.save(user);
   }
 
   findAll(): Promise<User[]> {
     return this.usersRepository.find();
   }
 
-  findOne(email: string) {
-    return this.usersRepository.findOne({ where: { email } });
+  findOne(obj: any) {
+    return this.usersRepository.findOne({ where: { ...obj } });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
